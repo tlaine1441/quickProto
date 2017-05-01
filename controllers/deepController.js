@@ -1,11 +1,11 @@
 var synaptic = require('synaptic');
 var request = require('request');
-
+require('dotenv').config()
 
 
 var getItem = function(req, res) {
 
-	request("http://api.wunderground.com/api//conditions/q/CO/Denver.json", function(error, response, body){
+	request("http://api.wunderground.com/api/" + process.env.API_KEY + "/conditions/q/CO/Denver.json", function(error, response, body){
 		//console.log(body);
 		var data = JSON.parse(body);
 		var myTemp = parseInt(data.current_observation.temp_c);
