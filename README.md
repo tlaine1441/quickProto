@@ -2,6 +2,7 @@
 
 # Brainless AI
 
+# [Link to Trello](https://trello.com/b/vdDPaxEi/rapid-prototype)
 
 ## About
 Brainless is a AI web app built in less that 24hours that pulls live weather information and 
