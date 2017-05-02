@@ -8,6 +8,9 @@ routes.$inject = ['$routeProvider', '$locationProvider'];
 function routes($routeProvider, $locationProvider) {
   $routeProvider
     .when('/', {
+      templateUrl: "/welcome.html"
+    })
+    .when('/check', {
       templateUrl: "/main.html"
     })
     .when('/twilio', {
