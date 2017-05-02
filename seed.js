@@ -8,7 +8,7 @@ db.PreUser.remove({}, function(err, books){
   } else {
     console.log('removed all');
 
-    db.PreUser.create({number: '+17204963685'}, function(err, train){
+    db.PreUser.create({number: process.env.NUMBER}, function(err, train){
       if (err) { return console.log('err', err); }
       console.log("created", train);
       process.exit();
