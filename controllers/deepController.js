@@ -1,17 +1,24 @@
 var synaptic = require('synaptic');
 var request = require('request');
-require('dotenv').config()
+require('dotenv').config();
+var client = require('twilio')(process.env.ACCOUNT_SID, process.env.TOKEN);
 
+// require models
+var db = require("../models");
 
+var predict;
 var getItem = function(req, res) {
-
 	request("http://api.wunderground.com/api/" + process.env.API_KEY + "/conditions/q/CO/Denver.json", function(error, response, body){
 		//console.log(body);
 		var data = JSON.parse(body);
 		var myTemp = parseInt(data.current_observation.temp_c);
 		var tempF = parseInt(data.current_observation.temp_f);
+		res.json(network(myTemp, tempF));
+	});
+} 
 
-		function convertToBinaryArray(temperature) {
+function network(myTemp, tempF) {
+	function convertToBinaryArray(temperature) {
 		    var tempInBinary = temperature.toString(2); // Convert to binary
 		 
 		    // If it is more than 7 digits long, truncate
@@ -82,18 +89,35 @@ var getItem = function(req, res) {
 		}
 		if(jacket > sweater && jacket > tShirt && jacket > nothing ) {
 			obj.prediction = 0;
+			predict = "Jacket";
 		} else if (sweater > jacket && sweater > tShirt && sweater > nothing) {
 			obj.prediction = 1;
+			predict = "Sweater";
 		} else if (tShirt > jacket && tShirt > sweater && tShirt > nothing) {
 			obj.prediction = 2;
+			predict = "T-Shirt";
 		} else if(nothing > jacket && nothing > sweater && jacket > tShirt) {
 			obj.prediction = 3;
+			predict = "Nothing";
 		}
-		res.json(obj);
+		return obj;
+}
+
+function sendText(req, res) {
+	db.PreUser.findOne({_id: '590837b5e96c399ce70e1c64'}, function(err, user){
+		console.log(user);
+		client.messages.create({
+		to: user.number,
+		from: '+17206339594',
+		body: ("You should wear a " + predict)
+	}, function(err, data){
+		if(err){console.log(err);}
+		console.log(data);
+		res.send();
 	});
-
-
-} 
+	});
+}
 
 // export controllers
 module.exports.getItem = getItem;
+module.exports.sendText = sendText;

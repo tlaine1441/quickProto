@@ -4,11 +4,13 @@ const app     = express();
 const port    = process.env.PORT || 3000;
 const bodyParser = require('body-parser'); 
 
+
 app.use(bodyParser()); 
 
 // require routes from routes config
 var routes = require('./config/routes');
 app.use(routes);
+
 
 
 // serve public front end files from public

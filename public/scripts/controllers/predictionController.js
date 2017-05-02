@@ -1,10 +1,29 @@
 angular.module('app')
-	.controller('PredictionController', PredictionController);
+	.controller('PredictionController', PredictionController)
+  .controller('SendTextController', SendTextController)
+  .config(routes);
+
+
+routes.$inject = ['$routeProvider', '$locationProvider'];
+function routes($routeProvider, $locationProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: "/main.html"
+    })
+    .when('/twilio', {
+      templateUrl: "/sent.html",
+      controller: 'SendTextController'
+    });
+
+    $locationProvider.html5Mode({
+      enabled:true,
+      requireBase: false
+    });
+}
 
 PredictionController.$inject = ['$http'];
 function PredictionController($http) {
 	var vm = this;
-
 	$http
       .get('/prediction')
       .then(function(response){
@@ -23,4 +42,13 @@ function PredictionController($http) {
         vm.temp = parseInt(response.data.temp);
 
     });
+}
+
+function SendTextController($http) {
+  var vm = this;
+  $http
+      .get('/twilio')
+      .then(function(response){
+        console.log(response);
+      });
 }

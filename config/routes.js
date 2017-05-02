@@ -10,6 +10,9 @@ var deepController = require('../controllers/deepController');
 router.route('/prediction') // index
   .get(deepController.getItem)
 
+router.route('/twilio')
+	.get(deepController.sendText)
+
 
 
 // export router
