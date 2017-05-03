@@ -9,13 +9,13 @@ var db = require("../models");
 
 var predict;
 var getItem = function(req, res) {
-	// request("http://api.wunderground.com/api/" + process.env.API_KEY + "/conditions/q/CO/Denver.json", function(error, response, body){
-	// 	//console.log(body);
-	// 	var data = JSON.parse(body);
-	// 	var myTemp = parseInt(data.current_observation.temp_c);
-	// 	var tempF = parseInt(data.current_observation.temp_f);
-	// 	res.json(network(myTemp, tempF));
-	// });
+	request("http://api.wunderground.com/api/" + process.env.API_KEY + "/conditions/q/CO/Denver.json", function(error, response, body){
+		//console.log(body);
+		var data = JSON.parse(body);
+		var myTemp = parseInt(data.current_observation.temp_c);
+		var tempF = parseInt(data.current_observation.temp_f);
+		res.json(network(myTemp, tempF));
+	});
 } 
 
 function network(myTemp, tempF) {
